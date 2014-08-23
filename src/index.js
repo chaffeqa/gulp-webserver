@@ -138,6 +138,11 @@ module.exports = function(options) {
   else {
     var webserver = http.createServer(app).listen(config.port, config.host, openInBrowser);
   }
+  
+  // Handle DNS and Network errors
+  webserver.on("error", function(exception, socket){
+    stream.emit("error", exception);
+  });
 
   gutil.log('Webserver started at', gutil.colors.cyan('http' + (config.https ? 's' : '') + '://' + config.host + ':' + config.port));
 
